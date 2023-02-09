@@ -20,7 +20,7 @@ with open("nasa.csv", "w", newline="") as f:
                      "unsure"])
     
     for category in categories: 
-        #request to Nrel api
+        #request to NASA api
         new_url = url + category
         api_response = requests.get(new_url, allow_redirects=True)
 
