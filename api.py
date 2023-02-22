@@ -64,8 +64,7 @@ deduped_tech_ids = [*set(nasa_individual_tech_ids)]
 with open("nasa.csv", "w", newline="") as f:
     writer = csv.writer(f)
 
-    writer.writerow(
-        [
+    fieldnames = [
             "_id",
             "subtitle",
             "tech_desc",
@@ -75,6 +74,8 @@ with open("nasa.csv", "w", newline="") as f:
             "cemail",
             "application",
             "benefit",
+            "tags",
+            "rlink",
             "trl",
             "id",
             "type",
@@ -87,8 +88,10 @@ with open("nasa.csv", "w", newline="") as f:
             "license_term",
             "evaluation_fee",
             "evaluation_lic_term",
-            "case_number",
+            "case_numbers",
             "title",
+            "attach",
+            "att_path",
             "abstract",
             "category",
             "subcategory",
@@ -101,20 +104,19 @@ with open("nasa.csv", "w", newline="") as f:
             "fig3",
             "fig4",
             "push_date",
-            "erelations",
-            
+            "eRelations"   
         ]
-    )
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
 
-	for nasa_id in deduped_tech_ids: 
-    	new_url = url + nasa_id
+    for nasa_id in deduped_tech_ids: 
+        new_url = tech_url + nasa_id
 
-    	api_response = requests.get(new_url, allow_redirects=True)
+        api_response = requests.get(new_url, allow_redirects=True)
     
-    	technology = api_response.json()
-    	individual_tech = technology["results"]
+        technology = api_response.json()
 
-    	writer.writerows(individual_tech)
-    	print("Looks good! Record: " + nasa_id)
+        writer.writerows(technology["results"])
+        print("Looks good! Record: " + nasa_id)
 
     print("All done! " + str(count))
